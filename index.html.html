@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Campus Tech Help Desk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border-subtle: #e5e7eb;
+      --danger: #ef4444;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #020617 100%);
+      color: #f9fafb;
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--card);
+      color: var(--text-main);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+      padding: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .card {
+        padding: 32px 36px;
+      }
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: rgba(37, 99, 235, 0.08);
+      color: #1d4ed8;
+      margin-bottom: 10px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    h1 {
+      font-size: clamp(26px, 4vw, 32px);
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    @media (min-width: 900px) {
+      .layout {
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: start;
+      }
+    }
+
+    .form-card,
+    .info-card {
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      padding: 18px 18px 20px;
+    }
+
+    @media (min-width: 768px) {
+      .form-card,
+      .info-card {
+        padding: 20px 20px 22px;
+      }
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .section-title span.badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .helper {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 11px;
+      font-size: 13px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 0;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      background: #f9fafb;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.12);
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 70px;
+      max-height: 160px;
+    }
+
+    .inline-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .inline-row .field-group {
+      flex: 1 1 150px;
+      margin-bottom: 0;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.1s ease, opacity 0.1s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #eff6ff;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+      background: #1d4ed8;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      padding-inline: 10px;
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: #f3f4f6;
+      color: var(--text-main);
+      transform: none;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .btn-primary .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #bbf7d0;
+    }
+
+    .estimate-card {
+      margin-top: 14px;
+      border-radius: var(--radius-lg);
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 14px 14px 13px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .estimate-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.16), transparent 55%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .estimate-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .estimate-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .estimate-main {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .estimate-price {
+      font-size: 19px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .estimate-range-note {
+      font-size: 12px;
+      color: #cbd5f5;
+    }
+
+    .estimate-breakdown {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .estimate-breakdown span {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .estimate-footnote {
+      margin-top: 6px;
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+    }
+
+    .info-list li {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      padding-block: 3px;
+      color: var(--text-muted);
+    }
+
+    .info-bullet {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-soft);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: var(--accent);
+      flex-shrink: 0;
+      background: #eff6ff;
+    }
+
+    .mini-heading {
+      font-size: 12px;
+      font-weight: 600;
+      margin: 10px 0 4px;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafb;
+      color: var(--text-muted);
+    }
+
+    .chip strong {
+      color: var(--text-main);
+    }
+
+    .tiny-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .error {
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 2px;
+    }
+
+    .status {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    .status.ok {
+      color: #16a34a;
+    }
+
+    .status.fail {
+      color: var(--danger);
+    }
+
+    footer {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="card">
+      <div class="pill">
+        <span class="pill-dot"></span>
+        On-campus tech help · Fast, student-friendly pricing
+      </div>
+      <h1>Campus Tech Help Desk</h1>
+      <p class="subtitle">
+        Submit a quick ticket. Get a same-day rough estimate for repairs or cleanup. No nonsense, no upsell.
+      </p>
+
+      <div class="layout">
+        <!-- LEFT: TICKET FORM -->
+        <section class="form-card">
+          <div class="section-title">
+            <span>Start a ticket</span>
+            <span class="badge">Takes &lt; 1 minute</span>
+          </div>
+
+          <form id="ticket-form">
+            <div class="inline-row">
+              <div class="field-group">
+                <label for="name">Name*</label>
+                <input id="name" type="text" required placeholder="First & last name" />
+              </div>
+              <div class="field-group">
+                <label for="contact">Email or phone*</label>
+                <input id="contact" type="text" required placeholder="Where I should reply" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="location">Dorm / building (optional)</label>
+              <input id="location" type="text" placeholder="Example: Harbor Hall, Room 304" />
+            </div>
+
+            <div class="inline-row">
+              <div class="field-group">
+                <label for="device">What are you having trouble with?*</label>
+                <select id="device" required>
+                  <option value="">Select device</option>
+                  <option value="laptop">Laptop</option>
+                  <option value="desktop">Desktop / PC</option>
+                  <option value="tablet">Tablet</option>
+                  <option value="headphones">Headphones / earbuds</option>
+                  <option value="speakers">Speakers</option>
+                  <option value="console">Game console</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="field-group">
+                <label for="issue">Main issue*</label>
+                <select id="issue" required>
+                  <option value="">Select issue</option>
+                  <option value="malware">Malware / virus / weird pop-ups</option>
+                  <option value="slow">Very slow / freezing</option>
+                  <option value="no-boot">Won’t power on / won’t boot</option>
+                  <option value="screen">Cracked / broken screen</option>
+                  <option value="battery">Battery won’t hold charge</option>
+                  <option value="nosound">No sound / one side not working</option>
+                  <option value="port">Loose / broken port (charging, USB, audio)</option>
+                  <option value="bluetooth">Bluetooth / connection issues</option>
+                  <option value="other">Something else</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label for="description">Quick description*</label>
+              <textarea
+                id="description"
+                required
+                placeholder="Ex: Laptop runs super slow and shows random virus alerts when I open Chrome."
+              ></textarea>
+              <div class="helper">No need to write an essay—just enough so I know what to expect.</div>
+            </div>
+
+            <div class="field-group">
+              <label for="urgency">How soon do you need it?</label>
+              <select id="urgency">
+                <option value="flexible">Flexible (2–4 days is fine)</option>
+                <option value="soon">Soon (24–48 hours)</option>
+                <option value="rush">Rush if possible (big exam / project)</option>
+              </select>
+            </div>
+
+            <div id="form-error" class="error hidden"></div>
+            <div id="form-status" class="status"></div>
+
+            <div class="btn-row">
+              <button type="button" class="btn-primary" id="estimate-btn">
+                <span class="dot"></span>
+                Get rough estimate
+              </button>
+              <button type="button" class="btn-ghost" id="submit-btn">
+                Confirm &amp; send ticket
+              </button>
+              <button type="button" class="btn-ghost" id="clear-btn">
+                Clear form
+              </button>
+            </div>
+          </form>
+
+          <!-- ESTIMATE OUTPUT -->
+          <div id="estimate-card" class="estimate-card hidden">
+            <div class="estimate-inner">
+              <div class="estimate-label">Rough price estimate</div>
+              <div class="estimate-main">
+                <div id="estimate-price" class="estimate-price">$0 – $0</div>
+                <div id="estimate-range-note" class="estimate-range-note"></div>
+              </div>
+              <div id="estimate-breakdown" class="estimate-breakdown"></div>
+              <div class="estimate-footnote">
+                This is a ballpark price so you’re not surprised. Final cost is confirmed after I see the device
+                and look up the exact part cost for your model.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT: INFO / PRICING PHILOSOPHY -->
+        <section class="info-card">
+          <div class="section-title">
+            <span>How this works</span>
+          </div>
+          <ul class="info-list">
+            <li>
+              <div class="info-bullet">1</div>
+              <div>
+                <strong>Send a quick ticket.</strong><br />
+                I read every request personally—no bots pretending to fix your laptop.
+              </div>
+            </li>
+            <li>
+              <div class="info-bullet">2</div>
+              <div>
+                <strong>Get a rough estimate here.</strong><br />
+                The calculator uses typical part prices plus a small student-friendly service fee.
+              </div>
+            </li>
+            <li>
+              <div class="info-bullet">3</div>
+              <div>
+                <strong>I confirm by text/email.</strong><br />
+                I’ll message you with a firm quote and time estimate before I touch anything.
+              </div>
+            </li>
+          </ul>
+
+          <div class="mini-heading">Typical student pricing</div>
+          <div class="chip-row">
+            <div class="chip">
+              <strong>Malware / virus cleanup</strong><br />
+              Usually around $20–$30 (no extra parts needed).
+            </div>
+            <div class="chip">
+              <strong>Headphones / speakers</strong><br />
+              About $20 on top of the replacement part.
+            </div>
+            <div class="chip">
+              <strong>Laptop parts (screen, battery, etc.)</strong><br />
+              Roughly $20–$50 above the actual part cost.
+            </div>
+          </div>
+
+          <p class="tiny-note">
+            I’m not trying to tax broke college students. The goal is to cover parts + a small amount for time,
+            not charge “shop” prices.
+          </p>
+
+          <div class="mini-heading" style="margin-top: 10px;">Questions you can copy/paste to ask me</div>
+          <ul class="info-list">
+            <li>
+              <div class="info-bullet">?</div>
+              <div>“Can you beat a quote I got from ___ for this repair?”</div>
+            </li>
+            <li>
+              <div class="info-bullet">?</div>
+              <div>“Is this repair worth it or should I save for a new device?”</div>
+            </li>
+            <li>
+              <div class="info-bullet">?</div>
+              <div>“Can you just back up my files and wipe everything?”</div>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <footer>
+        This site is a simple estimate tool. Final pricing is always confirmed directly with you based on your
+        exact device &amp; parts.
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("ticket-form");
+    const estimateCard = document.getElementById("estimate-card");
+    const estimatePriceEl = document.getElementById("estimate-price");
+    const estimateRangeNoteEl = document.getElementById("estimate-range-note");
+    const estimateBreakdownEl = document.getElementById("estimate-breakdown");
+    const errorEl = document.getElementById("form-error");
+    const statusEl = document.getElementById("form-status");
+    const clearBtn = document.getElementById("clear-btn");
+    const estimateBtn = document.getElementById("estimate-btn");
+    const submitBtn = document.getElementById("submit-btn");
+
+    form.addEventListener("submit", (e) => e.preventDefault());
+
+    function getDeviceCategory(deviceValue) {
+      switch (deviceValue) {
+        case "laptop":
+        case "desktop":
+        case "tablet":
+          return "computer";
+        case "headphones":
+        case "speakers":
+          return "audio";
+        case "console":
+          return "console";
+        default:
+          return "other";
+      }
+    }
+
+    function calculateEstimate(device, issue, urgency) {
+      const category = getDeviceCategory(device);
+
+      let serviceLow = 20;
+      let serviceHigh = 30;
+
+      if (urgency === "rush") {
+        serviceLow += 5;
+        serviceHigh += 10;
+      } else if (urgency === "soon") {
+        serviceHigh += 5;
+      }
+
+      if (issue === "malware" || issue === "slow") {
+        const low = 20;
+        const high = 30 + (urgency === "rush" ? 5 : 0);
+        return {
+          low,
+          high,
+          rangeNote: "Typical flat rate for malware/virus cleanup on a student laptop or PC.",
+          breakdownText:
+            "<span>Service only, no parts expected</span><span>Malware/cleanup jobs stay in the $20–$30 range unless your situation is very unusual.</span>",
+        };
+      }
+
+      if (category === "audio") {
+        const partsLow = 10;
+        const partsHigh = 40;
+        const markup = 20;
+        const low = partsLow + markup;
+        const high = partsHigh + markup;
+
+        return {
+          low,
+          high,
+          rangeNote: "Most headphone / speaker fixes are the cost of the part plus about $20.",
+          breakdownText:
+            `<span>Estimated parts: $${partsLow}–$${partsHigh}</span>` +
+            `<span>My fee on top of parts: about $${markup}</span>`,
+        };
+      }
+
+      if (category === "computer") {
+        let partsLow;
+        let partsHigh;
+
+        switch (issue) {
+          case "screen":
+            partsLow = 70;
+            partsHigh = 160;
+            break;
+          case "battery":
+            partsLow = 40;
+            partsHigh = 110;
+            break;
+          case "no-boot":
+          case "port":
+            partsLow = 25;
+            partsHigh = 100;
+            break;
+          default:
+            partsLow = 20;
+            partsHigh = 120;
+            break;
+        }
+
+        const markupLow = 20;
+        const markupHigh = 50;
+
+        const low = partsLow + markupLow;
+        const high = partsHigh + markupHigh;
+
+        return {
+          low,
+          high,
+          rangeNote: "Based on typical part prices for student laptops plus a small repair fee.",
+          breakdownText:
+            `<span>Estimated parts: $${partsLow}–$${partsHigh}</span>` +
+            `<span>My fee above parts: about $${markupLow}–$${markupHigh}</span>`,
+        };
+      }
+
+      let partsLow = 25;
+      let partsHigh = 120;
+      const markupLow = 20;
+      const markupHigh = 40;
+      const low = partsLow + markupLow;
+      const high = partsHigh + markupHigh;
+
+      return {
+        low,
+        high,
+        rangeNote: "Ballpark based on typical small hardware repairs for student devices.",
+        breakdownText:
+          `<span>Estimated parts: $${partsLow}–$${partsHigh}</span>` +
+          `<span>My fee above parts: about $${markupLow}–$${markupHigh}</span>`,
+      };
+    }
+
+    function getFormData() {
+      return {
+        name: document.getElementById("name").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        location: document.getElementById("location").value.trim(),
+        device: document.getElementById("device").value,
+        issue: document.getElementById("issue").value,
+        description: document.getElementById("description").value.trim(),
+        urgency: document.getElementById("urgency").value || "flexible",
+      };
+    }
+
+    function validateRequiredFields(data) {
+      if (!data.name || !data.contact || !data.device || !data.issue || !data.description) {
+        return "Please fill in all required fields before continuing.";
+      }
+      return "";
+    }
+
+    function clearMessages() {
+      errorEl.classList.add("hidden");
+      errorEl.textContent = "";
+      statusEl.textContent = "";
+      statusEl.classList.remove("ok", "fail");
+    }
+
+    estimateBtn.addEventListener("click", function () {
+      clearMessages();
+
+      const data = getFormData();
+      const errorMsg = validateRequiredFields(data);
+      if (errorMsg) {
+        errorEl.textContent = errorMsg;
+        errorEl.classList.remove("hidden");
+        estimateCard.classList.add("hidden");
+        return;
+      }
+
+      const estimate = calculateEstimate(data.device, data.issue, data.urgency);
+      const low = Math.round(estimate.low);
+      const high = Math.round(estimate.high);
+
+      estimatePriceEl.textContent = `$${low} – $${high}`;
+      estimateRangeNoteEl.textContent = estimate.rangeNote;
+      estimateBreakdownEl.innerHTML = estimate.breakdownText;
+
+      estimateCard.classList.remove("hidden");
+      statusEl.textContent = "This is just a ballpark. You can confirm and send the ticket when you're ready.";
+      statusEl.classList.add("ok");
+    });
+
+    submitBtn.addEventListener("click", async function () {
+      clearMessages();
+
+      const data = getFormData();
+      const errorMsg = validateRequiredFields(data);
+      if (errorMsg) {
+        errorEl.textContent = errorMsg;
+        errorEl.classList.remove("hidden");
+        return;
+      }
+
+      const estimate = calculateEstimate(data.device, data.issue, data.urgency);
+      data.estimatedLow = Math.round(estimate.low);
+      data.estimatedHigh = Math.round(estimate.high);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      try {
+        const response = await fetch("/api/ticket", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (!response.ok) throw new Error("Request failed");
+
+        statusEl.textContent = "Ticket sent. You'll get an email / text from me soon.";
+        statusEl.classList.add("ok");
+      } catch (err) {
+        statusEl.textContent = "Something went wrong sending your ticket. Please try again.";
+        statusEl.classList.add("fail");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Confirm & send ticket";
+      }
+    });
+
+    clearBtn.addEventListener("click", function () {
+      form.reset();
+      estimateCard.classList.add("hidden");
+      clearMessages();
+    });
+  </script>
+</body>
+</html>
